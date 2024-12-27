@@ -1,0 +1,14 @@
+{
+  "name": "paympesa",
+  "version": "2.0.0",
+  "description": "A nodejs package to handle M-Pesa (Daraja-Api) operations such as authorization, STK Push, callbacks and more",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.7.7"
+  },
+  "author": "PAUL OUMA OCHOLLA (@Marcocholla01)",
+  "license": "ISC"
+}
