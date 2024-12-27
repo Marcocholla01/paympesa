@@ -9,6 +9,8 @@ class MpesaConfig {
     stkPushUrl,
     callbackUrl,
     queryUrl,
+    accountReference,
+    transactionType,
     transactionDesc,
   }) {
     this.consumerKey = consumerKey;
@@ -19,6 +21,8 @@ class MpesaConfig {
     this.stkPushUrl = stkPushUrl;
     this.callbackUrl = callbackUrl;
     this.queryUrl = queryUrl;
+    this.transactionType = transactionType
+    this.accountReference = accountReference || "paympesaTransaction";
     this.transactionDesc = transactionDesc || "stk push initiated with PAYMPESA package";
   }
 }

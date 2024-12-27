@@ -22,37 +22,41 @@ const initiateSTKPush = async (config, { phoneNumber, amount }) => {
     const timestamp = generateTimestamp();
 
     // Generate password
-    const stkPassword = Buffer.from(
-      config.shortCode + config.passkey + timestamp
-    ).toString("base64");
+    const stkPassword = Buffer.from(config.shortCode + config.passkey + timestamp).toString("base64");
 
     // Prepare STK Push request
     const requestBody = {
       BusinessShortCode: config.shortCode,
       Password: stkPassword,
       Timestamp: timestamp,
-      TransactionType: "CustomerPayBillOnline",
-      Amount: amount,
-      PartyA: formattedPhone,
+      TransactionType: config.transactionType,
+      Amount: Number(amount),
+      PartyA: String(formattedPhone),
       PartyB: config.shortCode,
-      PhoneNumber: formattedPhone,
+      PhoneNumber: String(formattedPhone),
       CallBackURL: config.callbackUrl,
       AccountReference: config.accountReference,
       TransactionDesc: config.transactionDesc,
     };
 
-    const response = await axios.post(config.stkPushUrl, requestBody, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    const response = await axios.post(config.stkPushUrl, requestBody, { headers });
 
     return response.data;
   } catch (error) {
-    throw new Error(
-      `STK Push Error: ${error.response?.data?.errorMessage || error.message}`
-    );
+    const errorResponse = error.response?.data || {};
+
+    // Throw the error in JSON format
+    throw {
+      requestId: errorResponse.requestId || "Unknown Request ID",
+      errorCode: errorResponse.errorCode || "Unknown Error Code",
+      errorMessage:
+        errorResponse.errorMessage || error.message || "Unknown Error",
+    };
   }
 };
 
